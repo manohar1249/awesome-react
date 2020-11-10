@@ -1,17 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const Counter = ({count, increment, decrement}) => {
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => increment()}>Increment</button>
+      <button onClick={() => decrement()}>Decrement</button>
+    </div>
+  )
+}
+const CounterApp = () => {
+  const [counts, setCounts] = React.useState([0])
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  const addCounter = () => {
+    const newCounts = counts.concat([0])
+    setCounts(newCounts)
+  }
+
+  const increment = (currentIndex) => {
+    const newCounts = counts.map((value, index) => index === currentIndex ? value + 1 : value)
+    setCounts(newCounts)
+  }
+
+  const decrement = (currentIndex) => {
+    const newCounts = counts.map((value, index) => index === currentIndex ? value - 1 : value)
+    setCounts(newCounts)
+  }
+
+  return (
+    <div style={{textAlign: "center"}}>
+      {counts.map((ele, idx) => <Counter count={ele} increment={() => increment(idx)} decrement={() => decrement(idx)}/> )}
+      
+      <br /><br />
+      <button onClick={addCounter}>Add Counter</button>
+    </div>
+  )
+}
+
+ReactDOM.render(<CounterApp />, document.getElementById('root'))
+
+
